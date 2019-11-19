@@ -31,7 +31,7 @@ blocked_menus = ['Insalata', 'Garden', 'GARDEN', 'natürlich vegi', 'GARDEN ABEN
 #
 # for uzh Mensa use 'uzh'
 #---------------------------------------------------------------------------------#
-groups = {
+locations = {
     'zentrum': [12, 'uzh', 13, 4, 11, 28],
     'hoengg': [15,18,19,20,21,25],
     'clausius': [4],
@@ -66,8 +66,8 @@ class bcolors:
 def usage():
     print('usage: "menus ' + bcolors.BOLD + 'location' + bcolors.ENDC + ' [--all]"')
     print("with possible locations:")
-    for group in groups.keys():
-        print("\t", group)
+    for location in locations.keys():
+        print("\t", location)
     print("")
     print('add "--all" to ignore blocked menus')
     sys.exit()
@@ -121,11 +121,11 @@ def print_uzh_menus():
 
 if len(sys.argv) != 2 and len(sys.argv) != 3:
     usage()
-if(list(filter(lambda group: group == sys.argv[1], groups))):
+if(list(filter(lambda location: location == sys.argv[1], locations))):
     with urllib.request.urlopen(eth_url) as url:
         data = json.loads(url.read().decode())
 
-        for mensa in groups[sys.argv[1]]:
+        for mensa in locations[sys.argv[1]]:
             if(mensa == 'uzh'):
                 print_uzh_menus()
             else:
@@ -146,5 +146,7 @@ if(list(filter(lambda group: group == sys.argv[1], groups))):
                             description = " ".join(description.split())
                             print("    ",description)
                     print()
+                else:
+                    print(bcolors.FAIL, "You either added an invalid mensa-id or this mensa doesn't serve dinner", bcolors.ENDC)
 else:
     usage()
