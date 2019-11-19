@@ -13,8 +13,11 @@ Simply download the file and drop it in a folder in your `$PATH`
 For example you can run
 
 ``curl 'https://raw.githubusercontent.com/nxt191/mensa-menus/master/menus' > menus
+
 chmod +x menus
+
 mv menus /usr/local/bin``
+
 
 ## Usage
 
@@ -38,5 +41,6 @@ Change the value of `prices` to `'student'`, `'staff'` or `'extern'` to get the 
 Add or remove menu names from `blocked_menus` to hide menus you're not interested in. By default, most vegi menus are blocked, because yuck vegies... (Line 12)
 
 Modify the default locations by changing the `locations`. See Line 14 etc. for ids. (Line 33)
+
 
 
