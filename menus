@@ -129,6 +129,7 @@ if(list(filter(lambda location: location == sys.argv[1], locations))):
         for mensa in locations[sys.argv[1]]:
             if(mensa == 'uzh'):
                 print_uzh_menus()
+                has_printed_at_least_once = 1
             else:
                 potential_mensa = list(filter(lambda menu: menu['id'] == mensa, data))
 
