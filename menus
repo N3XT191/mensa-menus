@@ -125,6 +125,7 @@ if(list(filter(lambda location: location == sys.argv[1], locations))):
     with urllib.request.urlopen(eth_url) as url:
         data = json.loads(url.read().decode())
 
+        has_printed_at_least_once = 0
         for mensa in locations[sys.argv[1]]:
             if(mensa == 'uzh'):
                 print_uzh_menus()
@@ -146,7 +147,8 @@ if(list(filter(lambda location: location == sys.argv[1], locations))):
                             description = " ".join(description.split())
                             print("    ",description)
                     print()
-                else:
+                    has_printed_at_least_once = 1
+                if not has_printed_at_least_once:
                     print(bcolors.FAIL, "You either added an invalid mensa-id or this mensa doesn't serve dinner", bcolors.ENDC)
 else:
     usage()
