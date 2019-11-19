@@ -2,6 +2,8 @@
 
 This script fetches and displays menus for ETH mensas and the Mercato UZH mensa.
 
+![example image](example.png)
+
 ## Installation
 
 This script works on OSX and (probably) all Linux distros. 
