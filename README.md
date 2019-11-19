@@ -38,6 +38,11 @@ Type `menus location --all` to get all menus, even the blocked ones.
 It will show the Dinner Menus after 14:00 (your system time) and next day's lunch after 21:00.
 
 
+## Known bugs
+
+There are still some bugs for certain edge cases around weekend times. Will (might) be fixed in the next few days...
+
+
 ## Customization
 
 Open the file `menus` in your favourite text editor.
