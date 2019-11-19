@@ -1,9 +1,58 @@
 #!/usr/bin/env python3
-
 import urllib.request, json 
 from xml.etree.ElementTree import parse, fromstring
 import sys
 import datetime
+#--------------------------------------------------------------------#
+# set to 'student', 'staff' or 'extern'
+#--------------------------------------------------------------------#
+prices = 'student'
+#--------------------------------------------------------------------#
+# customize blocked menus here by adding menu names to blocked_menus #
+#--------------------------------------------------------------------#
+blocked_menus = ['Insalata', 'Garden', 'GARDEN', 'natürlich vegi', 'GARDEN ABEND', 'food market vegi', 'Salad Pot', 'Small Salad Pot', 'WOK GREEN']
+#---------------------------------------------------------------------------------#
+# customize groups by modifying the dict below. As a reference, use following ids:#
+# Clausiusbar:                  4
+# Dozentenfoyer                 6
+# Foodtrailer ETZ:              9
+# G-ESSbar:                     11
+# Mensa Polyterrasse:           12
+# Polysnack:                    13
+# Tannenbar:                    14
+# Alumni quattro Lounge:        15
+# food market - pizza pasta:    18
+# food market - green day:      19
+# food market - grill bbQ       20
+# FUSION meal                   21
+# FUSION coffee:                22
+# BELLAVISTA:                   25
+# food&lab:                     28
+#
+# for uzh Mensa use 'uzh'
+#---------------------------------------------------------------------------------#
+groups = {
+    'zentrum': [12, 'uzh', 13, 4, 11, 28],
+    'hoengg': [15,18,19,20,21,25],
+    'clausius': [4],
+    'dozentenfoyer': [6],
+    'gessbar': [11],
+    'poly': [12],
+    'polysnack': [13],
+    'alumni': [15],
+    'pizza': [18],
+    'grill': [20],
+    'fusion': [21],
+    'grill': [20],
+    'bellavista': [25],
+    'foodlab': [28],
+    'uzh': ['uzh'],
+}
+
+#--------------------------------------------------------------------#
+# DO NOT MODIFY CODE BELOW                                           #
+#--------------------------------------------------------------------#
+
 class bcolors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
@@ -17,15 +66,11 @@ class bcolors:
 def usage():
     print('usage: "menus ' + bcolors.BOLD + 'location' + bcolors.ENDC + ' [--all]"')
     print("with possible locations:")
-    print("\t zentrum")
-    print("\t hoengg")
-    print("\t poly")
-    print("\t uzh")
+    for group in groups.keys():
+        print("\t", group)
     print("")
     print('add "--all" to ignore blocked menus')
     sys.exit()
-
-eth_mensas = {'zentrum' : [ 12, 13, 28, 11], 'hoengg' : [15, 18, 20, 21]}
 
 today = datetime.date.today().strftime("%Y-%m-%d")
 hour = datetime.datetime.now().hour
@@ -37,8 +82,6 @@ if(hour >= 21):
 
 weekday += 1
 
-
-
 if(hour >=14 and hour <=20):
     meal_time = 'dinner'
     uzh_id = '149'
@@ -49,10 +92,6 @@ else:
 eth_url = 'https://www.webservices.ethz.ch/gastro/v1/RVRI/Q1E1/meals/de/'+today+'/' + meal_time
 uzh_url = 'http://zfv.ch/de/menus/rssMenuPlan?menuId=' + uzh_id + '&dayOfWeek=' + str(weekday)
 
-blocked_menus = ['Insalata', 'Garden', 'GARDEN', 'natürlich vegi', 'GARDEN ABEND', 'food market vegi']
-
-if len(sys.argv) != 2 and len(sys.argv) != 3:
-    usage()
 
 def print_uzh_menus():
     with urllib.request.urlopen(uzh_url) as url:
@@ -80,45 +119,32 @@ def print_uzh_menus():
             i += 1
     print()
 
-if(sys.argv[1] == 'zentrum' or sys.argv[1] == 'hoengg'):
-    if(sys.argv[1] == 'zentrum'):
-        print_uzh_menus()
+if len(sys.argv) != 2 and len(sys.argv) != 3:
+    usage()
+if(list(filter(lambda group: group == sys.argv[1], groups))):
     with urllib.request.urlopen(eth_url) as url:
         data = json.loads(url.read().decode())
-        #polymensa = list(filter(lambda menu: menu['id'] == 12, data))[0]
-    
-        for id in eth_mensas[sys.argv[1]]:
-            potential_mensa = list(filter(lambda menu: menu['id'] == id, data))
 
-            if potential_mensa:
-                mensa = potential_mensa[0]
-                menus = mensa['meals']
+        for mensa in groups[sys.argv[1]]:
+            if(mensa == 'uzh'):
+                print_uzh_menus()
+            else:
+                potential_mensa = list(filter(lambda menu: menu['id'] == mensa, data))
 
-                print(bcolors.OKGREEN, bcolors.BOLD, mensa['mensa'], bcolors.ENDC)
-                for menu in menus:
-                    if menu['label'] not in blocked_menus:
-                        print(bcolors.OKBLUE, bcolors.BOLD, menu['label'] + " | CHF " + menu['prices']['student'], bcolors.ENDC)
-                        
-                        description = " ".join(menu['description'])
-                        # remove multiple spaces
-                        description = " ".join(description.split())
-                        print("    ",description)
-                print()
-elif(sys.argv[1] == 'poly'):
-    with urllib.request.urlopen(eth_url) as url:
-        data = json.loads(url.read().decode())
-        mensa = list(filter(lambda menu: menu['id'] == 12, data))[0]
-        menus = mensa['meals']
-        print(bcolors.OKGREEN, bcolors.BOLD, mensa['mensa'], bcolors.ENDC)
-        for menu in menus:
-            if menu['label'] not in blocked_menus or (len(sys.argv) == 3 and sys.argv[2] == "--all"):
-                print(bcolors.OKBLUE, bcolors.BOLD, menu['label'] + " | CHF " + menu['prices']['student'], bcolors.ENDC)
-                
-                description = " ".join(menu['description'])
-                # remove multiple spaces
-                description = " ".join(description.split())
-                print("    ", description)
-elif(sys.argv[1] == 'uzh'):
-    print_uzh_menus()
+                if potential_mensa:
+                    mensa = potential_mensa[0]
+                    menus = mensa['meals']
+
+                    print(bcolors.OKGREEN, bcolors.BOLD, mensa['mensa'], bcolors.ENDC)
+                    for menu in menus:
+                        if menu['label'] not in blocked_menus or (len(sys.argv) == 3 and sys.argv[2] == "--all"):
+                            menu_price = menu['prices'][prices]
+                            print(bcolors.OKBLUE, bcolors.BOLD, menu['label'] + " | CHF " , menu_price , bcolors.ENDC)
+                            
+                            description = " ".join(menu['description'])
+                            # remove multiple spaces
+                            description = " ".join(description.split())
+                            print("    ",description)
+                    print()
 else:
     usage()
