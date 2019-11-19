@@ -148,7 +148,7 @@ if(list(filter(lambda location: location == sys.argv[1], locations))):
                             print("    ",description)
                     print()
                     has_printed_at_least_once = 1
-                if not has_printed_at_least_once:
-                    print(bcolors.FAIL, "You either added an invalid mensa-id or this mensa doesn't serve dinner", bcolors.ENDC)
+        if not has_printed_at_least_once:
+            print(bcolors.FAIL, "You either added an invalid mensa-id or this mensa doesn't serve dinner", bcolors.ENDC)
 else:
     usage()
