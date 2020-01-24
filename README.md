@@ -37,6 +37,11 @@ Type `menus location --all` to get all menus, even the blocked ones.
 
 It will show the Dinner Menus after 14:00 (your system time) and next day's lunch after 21:00.
 
+## Fuzzy matching
+
+Thanks to RobinJadoul, you can also use abbreviations and it tries to find a matching group:
+
+use `menus z` for zentrum, `menus ps` for polysnack
 
 ## Known bugs
 
