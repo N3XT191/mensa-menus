@@ -52,11 +52,13 @@ There are still some bugs for certain edge cases around weekend times. Will (mig
 
 Open the file `menus` in your favourite text editor.
 
-Change the value of `prices` to `'student'`, `'staff'` or `'extern'` to get the prices desired. (Line 8)
+Change the value of `lang` to `'en'` or `'de'`to set the language of the menus. (Line 9)
 
-Add or remove menu names from `blocked_menus` to hide menus you're not interested in. By default, most vegi menus are blocked, because yuck vegies... (Line 12)
+Change the value of `prices` to `'student'`, `'staff'` or `'extern'` to get the prices desired. (Line 13)
 
-Modify the default locations by changing the `locations`. See Line 14 etc. for ids. (Line 33)
+Add or remove menu names from `blocked_menus` to hide menus you're not interested in. By default, most vegi menus are blocked, because yuck vegies... (Line 17)
+
+Modify the default locations by changing the `locations`. See Line 14 etc. for ids. (Line 38)
 
 
 
