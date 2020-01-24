@@ -4,6 +4,10 @@ from xml.etree.ElementTree import parse, fromstring
 import sys
 import datetime
 #--------------------------------------------------------------------#
+# set to 'en' or 'de'                                                #
+#--------------------------------------------------------------------#
+lang = 'en'
+#--------------------------------------------------------------------#
 # set to 'student', 'staff' or 'extern'
 #--------------------------------------------------------------------#
 prices = 'student'
@@ -84,13 +88,14 @@ weekday += 1
 
 if(hour >=14 and hour <=20):
     meal_time = 'dinner'
-    uzh_id = '149'
+    uzh_id = 149
 else:
     meal_time = 'lunch'
-    uzh_id = '148'
+    uzh_id = 148
 
-eth_url = 'https://www.webservices.ethz.ch/gastro/v1/RVRI/Q1E1/meals/de/'+today+'/' + meal_time
-uzh_url = 'http://zfv.ch/de/menus/rssMenuPlan?menuId=' + uzh_id + '&dayOfWeek=' + str(weekday)
+if lang == 'en': uzh_id += 505 - 148
+eth_url = 'https://www.webservices.ethz.ch/gastro/v1/RVRI/Q1E1/meals/{}/{}/{}'.format(lang, today, meal_time)
+uzh_url = 'http://zfv.ch/de/menus/rssMenuPlan?menuId={}&dayOfWeek={}'.format(uzh_id, str(weekday))
 
 
 def print_uzh_menus():
