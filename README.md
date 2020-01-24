@@ -41,7 +41,7 @@ It will show the Dinner Menus after 14:00 (your system time) and next day's lunc
 
 Thanks to RobinJadoul, you can also use abbreviations and it tries to find a matching group:
 
-use `menus z` for zentrum, `menus ps` for polysnack
+Use for example `menus z` for zentrum, `menus ps` for polysnack
 
 ## Known bugs
 
