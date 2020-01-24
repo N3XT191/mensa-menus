@@ -119,14 +119,37 @@ def print_uzh_menus():
             i += 1
     print()
 
+def match_location(possibilities, choice):
+    def subseq_match(a, b):
+        j = 0
+        for c in a:
+            if b[j] == c:
+                j += 1
+            if j >= len(b):
+                break
+        return j == len(b)
+
+    def match(a, b):
+        return a[0] == b[0] and subseq_match(a, b)
+
+    if not choice: return None
+    if choice in possibilities:
+        # Return the full name if it matches
+        return choice
+    found = [p for p in possibilities if match(p, choice)]
+    if len(found) == 1:
+        return found[0]
+    return None
+
 if len(sys.argv) != 2 and len(sys.argv) != 3:
     usage()
-if(list(filter(lambda location: location == sys.argv[1], locations))):
+location = match_location(locations.keys(), sys.argv[1])
+if location is not None:
     with urllib.request.urlopen(eth_url) as url:
         data = json.loads(url.read().decode())
 
         has_printed_at_least_once = 0
-        for mensa in locations[sys.argv[1]]:
+        for mensa in locations[location]:
             if(mensa == 'uzh'):
                 print_uzh_menus()
                 has_printed_at_least_once = 1
