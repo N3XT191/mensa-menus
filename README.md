@@ -52,7 +52,7 @@ There are still some bugs for certain edge cases around weekend times. Will (mig
 
 Open the file `menus` in your favourite text editor.
 
-Change the value of `lang` to `'en'` or `'de'`to set the language of the menus. (Line 9)
+Change the value of `lang` to `'en'` or `'de'`to set the language of the menus. (Line 9) (Thanks to RobinJadoul)
 
 Change the value of `prices` to `'student'`, `'staff'` or `'extern'` to get the prices desired. (Line 13)
 
