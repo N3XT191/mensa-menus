@@ -3,6 +3,10 @@ import urllib.request, json
 from xml.etree.ElementTree import parse, fromstring
 import sys
 import datetime
+#-----------------------------------------------------------------------------#
+# set to 'en', or 'de' ('en' seems to simply give de results for uzh however) #
+#-----------------------------------------------------------------------------#
+lang = 'en'
 #--------------------------------------------------------------------#
 # set to 'student', 'staff' or 'extern'
 #--------------------------------------------------------------------#
@@ -89,8 +93,8 @@ else:
     meal_time = 'lunch'
     uzh_id = '148'
 
-eth_url = 'https://www.webservices.ethz.ch/gastro/v1/RVRI/Q1E1/meals/de/'+today+'/' + meal_time
-uzh_url = 'http://zfv.ch/de/menus/rssMenuPlan?menuId=' + uzh_id + '&dayOfWeek=' + str(weekday)
+eth_url = 'https://www.webservices.ethz.ch/gastro/v1/RVRI/Q1E1/meals/{}/{}/{}'.format(lang, today, meal_time)
+uzh_url = 'http://zfv.ch/{}/menus/rssMenuPlan?menuId={}&dayOfWeek={}'.format(lang, uzh_id, str(weekday))
 
 
 def print_uzh_menus():
